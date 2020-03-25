@@ -26,6 +26,9 @@
     </plurals>
     <string name="add_peer">Add peer</string>
     <string name="addresses">Addresses</string>
+    <string name="allow_remote_control_intents_title">Allow remote control apps</string>
+    <string name="allow_remote_control_intents_summary_on">External apps may toggle tunnels (advanced)</string>
+    <string name="allow_remote_control_intents_summary_off">External apps may not toggle tunnels (recommended)</string>
     <string name="allowed_ips">Allowed IPs</string>
     <string name="app_name">WireGuard</string>
     <string name="bad_config_context">%1$s\'s %2$s</string>
@@ -39,7 +42,6 @@
     <string name="bad_config_reason_invalid_value">Invalid value</string>
     <string name="bad_config_reason_missing_attribute">Missing attribute</string>
     <string name="bad_config_reason_missing_section">Missing section</string>
-    <string name="bad_config_reason_missing_value">Missing value</string>
     <string name="bad_config_reason_syntax_error">Syntax error</string>
     <string name="bad_config_reason_unknown_attribute">Unknown attribute</string>
     <string name="bad_config_reason_unknown_section">Unknown section</string>
@@ -56,8 +58,8 @@
     <string name="create_activity_title">Create WireGuard Tunnel</string>
     <string name="create_bin_dir_error">Cannot create local binary directory</string>
     <string name="create_empty">Create from scratch</string>
-    <string name="create_from_file">Create from file or archive</string>
-    <string name="create_from_qr_code">Create from QR code</string>
+    <string name="create_from_file">Import from file or archive</string>
+    <string name="create_from_qr_code">Scan from QR code</string>
     <string name="create_output_dir_error">Cannot create output directory</string>
     <string name="create_downloads_file_error">Cannot create file in downloads directory</string>
     <string name="create_temp_dir_error">Cannot create local temporary directory</string>
@@ -99,7 +101,6 @@
     <string name="module_version_error">Unable to determine kernel module version</string>
     <string name="module_installer_not_found">No modules are available for your device</string>
     <string name="module_installer_initial">The experimental kernel module can improve performance</string>
-    <string name="module_installer_success">Success. The application will restart in 5 seconds</string>
     <string name="module_installer_title">Download and install kernel module</string>
     <string name="module_installer_working">Downloading and installing…</string>
     <string name="module_installer_error">Something went wrong. Please try again</string>
@@ -107,7 +108,7 @@
     <string name="module_disabler_disabled_summary">The experimental kernel module can improve performance</string>
     <string name="module_disabler_enabled_title">Disable kernel module backend</string>
     <string name="module_disabler_enabled_summary">The slower userspace backend may improve stability</string>
-    <string name="module_disabler_working">The application will restart in 5 seconds</string>
+    <string name="success_application_will_restart">Success. The application will now restart…</string>
     <string name="mtu">MTU</string>
     <string name="multiple_tunnels_title">Allow multiple simultaneous tunnels</string>
     <string name="multiple_tunnels_summary_on">Multiple tunnels may be turned on simultaneously</string>
@@ -123,7 +124,7 @@
     <string name="parse_error_integer">number</string>
     <string name="parse_error_reason">Cannot parse %1$s “%2$s”</string>
     <string name="peer">Peer</string>
-    <string name="permission_description">Allows an app to control WireGuard tunnels. Apps with this permission may enable and disable WireGuard tunnels at will, potentially misdirecting Internet traffic.</string>
+    <string name="permission_description">control WireGuard tunnels, enabling and disabling tunnels at will, potentially misdirecting Internet traffic</string>
     <string name="permission_label">control WireGuard tunnels</string>
     <string name="persistent_keepalive">Persistent keepalive</string>
     <string name="pre_shared_key">Pre-shared key</string>

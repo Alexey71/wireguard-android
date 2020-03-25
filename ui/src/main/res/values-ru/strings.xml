@@ -39,7 +39,6 @@
     <string name="bad_config_reason_invalid_value">Неправильное значение</string>
     <string name="bad_config_reason_missing_attribute">Несуществующий атрибут</string>
     <string name="bad_config_reason_missing_section">Несуществующий раздел</string>
-    <string name="bad_config_reason_missing_value">Несуществющее значение</string>
     <string name="bad_config_reason_syntax_error">Синтаксическая ошибка</string>
     <string name="bad_config_reason_unknown_attribute">Неизвестный атрибут</string>
     <string name="bad_config_reason_unknown_section">Неизвестный раздел</string>
@@ -56,8 +55,6 @@
     <string name="create_activity_title">Создать WireGuard туннель</string>
     <string name="create_bin_dir_error">Не удалось создать локальный двоичный каталог</string>
     <string name="create_empty">Создать вручную</string>
-    <string name="create_from_file">Создать из файла или архива</string>
-    <string name="create_from_qr_code">Создать из QR-кода</string>
     <string name="create_output_dir_error">Не удалось создать выходной каталог</string>
     <string name="create_downloads_file_error">Не удалось создать файл в каталоге загрузок</string>
     <string name="create_temp_dir_error">Не удалось создать временный локальный каталог</string>
@@ -99,7 +96,6 @@
     <string name="module_version_error">Не удалось определить версию модуля ядра</string>
     <string name="module_installer_not_found">Для вашего устройства нет доступных модулей</string>
     <string name="module_installer_initial">Экспериментальный модуль ядра может улучшить производительность</string>
-    <string name="module_installer_success">Успех. Приложение перезапустится через 5 секунд</string>
     <string name="module_installer_title">Скачать и установить модуль ядра</string>
     <string name="module_installer_working">Скачивание и установка…</string>
     <string name="module_installer_error">Что-то пошло не так. Пожалуйста, попробуйте еще раз</string>
@@ -107,7 +103,6 @@
     <string name="module_disabler_disabled_summary">Экспериментальный модуль ядра приоритетнее и улучшает производительность</string>
     <string name="module_disabler_enabled_title">Выключить модуль ядра</string>
     <string name="module_disabler_enabled_summary">Пользовательское пространство немного медленнее и улучшает стабильность</string>
-    <string name="module_disabler_working">Приложение перезапустится через 5 секунд</string>
     <string name="mtu">MTU</string>
     <string name="multiple_tunnels_title">Разрешить несколько одновременных туннелей</string>
     <string name="multiple_tunnels_summary_on">Могут быть включены несколько туннелей одновременно</string>
@@ -123,7 +118,6 @@
     <string name="parse_error_integer">число</string>
     <string name="parse_error_reason">Не могу разобрать %1$s “%2$s”</string>
     <string name="peer">Пир</string>
-    <string name="permission_description">Приложение сможет управлять туннелями WireGuard. Приложения с таким разрешением могут по желанию включать и отключать туннели WireGuard, что может привести к неправильному перенаправлению интернет-трафика.</string>
     <string name="permission_label">управлять туннелями WireGuard</string>
     <string name="persistent_keepalive">Постоянное соединение</string>
     <string name="pre_shared_key">Общий ключ</string>

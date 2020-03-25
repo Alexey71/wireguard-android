@@ -5,9 +5,11 @@
 
 package com.wireguard.android.model;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 
 import com.wireguard.android.Application;
 import com.wireguard.android.BR;
@@ -161,7 +163,7 @@ public final class TunnelManager extends BaseObservable {
         completableTunnels.complete(tunnels);
     }
 
-    private void refreshTunnelStates() {
+    public void refreshTunnelStates() {
         Application.getAsyncWorker().supplyAsync(() -> Application.getBackend().getRunningTunnelNames())
                 .thenAccept(running -> {
                     for (final ObservableTunnel tunnel : tunnels)
@@ -189,23 +191,25 @@ public final class TunnelManager extends BaseObservable {
                 .toArray(CompletableFuture[]::new));
     }
 
+    @SuppressLint("ApplySharedPref")
     public void saveState() {
         final Set<String> runningTunnels = StreamSupport.stream(tunnels)
                 .filter(tunnel -> tunnel.getState() == State.UP)
                 .map(ObservableTunnel::getName)
                 .collect(Collectors.toUnmodifiableSet());
-        Application.getSharedPreferences().edit().putStringSet(KEY_RUNNING_TUNNELS, runningTunnels).apply();
+        Application.getSharedPreferences().edit().putStringSet(KEY_RUNNING_TUNNELS, runningTunnels).commit();
     }
 
+    @SuppressLint("ApplySharedPref")
     private void setLastUsedTunnel(@Nullable final ObservableTunnel tunnel) {
         if (tunnel == lastUsedTunnel)
             return;
         lastUsedTunnel = tunnel;
         notifyPropertyChanged(BR.lastUsedTunnel);
         if (tunnel != null)
-            Application.getSharedPreferences().edit().putString(KEY_LAST_USED_TUNNEL, tunnel.getName()).apply();
+            Application.getSharedPreferences().edit().putString(KEY_LAST_USED_TUNNEL, tunnel.getName()).commit();
         else
-            Application.getSharedPreferences().edit().remove(KEY_LAST_USED_TUNNEL).apply();
+            Application.getSharedPreferences().edit().remove(KEY_LAST_USED_TUNNEL).commit();
     }
 
     CompletionStage<Config> setTunnelConfig(final ObservableTunnel tunnel, final Config config) {
@@ -275,10 +279,8 @@ public final class TunnelManager extends BaseObservable {
                 return;
             }
 
-            /* We disable the below, for now, as the security model of allowing this
-             * might take a bit more consideration.
-             */
-            if (true)
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M ||
+                    !Application.getSharedPreferences().getBoolean("allow_remote_control_intents", false))
                 return;
 
             final State state;

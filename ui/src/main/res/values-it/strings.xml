@@ -39,7 +39,6 @@
     <string name="bad_config_reason_invalid_value">Valore non valido</string>
     <string name="bad_config_reason_missing_attribute">Attributo mancante</string>
     <string name="bad_config_reason_missing_section">Sezione mancante</string>
-    <string name="bad_config_reason_missing_value">Valore mancante</string>
     <string name="bad_config_reason_syntax_error">Errore di sintassi</string>
     <string name="bad_config_reason_unknown_attribute">Attributo sconosciuto</string>
     <string name="bad_config_reason_unknown_section">Sezione sconosciuta</string>
@@ -56,8 +55,6 @@
     <string name="create_activity_title">Crea un tunnel WireGuard</string>
     <string name="create_bin_dir_error">Impossibile creare cartella locale binari</string>
     <string name="create_empty">Crea da zero</string>
-    <string name="create_from_file">Crea da un file o archivio</string>
-    <string name="create_from_qr_code">Crea da un codice QR</string>
     <string name="create_output_dir_error">Impossibile creare la cartella di output</string>
     <string name="create_downloads_file_error">Impossibile creare il file nella cartella di download</string>
     <string name="create_temp_dir_error">Impossibile creare la cartella locale temporanea</string>
@@ -99,7 +96,6 @@
     <string name="module_version_error">Impossibile determinare la versione modulo del kernel</string>
     <string name="module_installer_not_found">Nessun modulo disponibile per il tuo dispositivo</string>
     <string name="module_installer_initial">Il modulo del kernel sperimentale può migliorare le prestazioni</string>
-    <string name="module_installer_success">Fatto. L\'applicazione si riavvierà in 5 secondi</string>
     <string name="module_installer_title">Scarica e installa il modulo del kernel</string>
     <string name="module_installer_working">Scaricamento e installazione…</string>
     <string name="module_installer_error">Qualcosa è andato storto. Riprova</string>
@@ -115,7 +111,6 @@
     <string name="parse_error_integer">numero</string>
     <string name="parse_error_reason">Impossibile analizzare %1$s “%2$s”</string>
     <string name="peer">Peer</string>
-    <string name="permission_description">Permette ad un\'app di controllare i tunnel WireGuard. Le app con questa autorizzazione possono attivare e disattivare i tunnel WireGuard a piacimento, potenzialmente deviando il traffico internet.</string>
     <string name="permission_label">controlla tunnel WireGuard</string>
     <string name="persistent_keepalive">Tieni sempre attivo</string>
     <string name="pre_shared_key">Chiave condivisa (PSK)</string>

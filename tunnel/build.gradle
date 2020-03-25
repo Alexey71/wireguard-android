@@ -1,5 +1,8 @@
 apply plugin: 'com.android.library'
 
+version wireguardVersionName
+group groupName
+
 android {
     buildToolsVersion '29.0.3'
     compileSdkVersion 29
@@ -18,16 +21,21 @@ android {
             path 'tools/CMakeLists.txt'
         }
     }
+    testOptions.unitTests.all {
+        testLogging {
+            events 'passed', 'skipped', 'failed', 'standardOut', 'standardError'
+        }
+    }
 }
 
 dependencies {
-    api "net.sourceforge.streamsupport:android-retrofuture:$streamsupportVersion"
     api "net.sourceforge.streamsupport:android-retrostreams:$streamsupportVersion"
     implementation "androidx.annotation:annotation:$annotationsVersion"
     implementation "androidx.collection:collection:$collectionVersion"
     implementation "com.google.code.findbugs:jsr305:$jsr305Version"
     implementation "com.jakewharton.threetenabp:threetenabp:$threetenabpVersion"
     implementation "net.i2p.crypto:eddsa:$eddsaVersion"
+    testImplementation "junit:junit:$junitVersion"
 }
 
 apply from: "publish.gradle"
