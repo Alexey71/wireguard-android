@@ -35,6 +35,7 @@ import com.wireguard.android.BuildConfig
 import com.wireguard.android.R
 import com.wireguard.android.databinding.LogViewerActivityBinding
 import com.wireguard.android.util.DownloadsFileSaver
+import com.wireguard.android.util.ErrorMessages
 import com.wireguard.android.widget.EdgeToEdge.setUpFAB
 import com.wireguard.android.widget.EdgeToEdge.setUpRoot
 import com.wireguard.android.widget.EdgeToEdge.setUpScrollingContent
@@ -169,17 +170,25 @@ class LogViewerActivity : AppCompatActivity() {
         withContext(Dispatchers.Main) {
             saveButton?.isEnabled = false
             withContext(Dispatchers.IO) {
-                val outputFile = DownloadsFileSaver.save(context, "wireguard-log.txt", "text/plain", true)
-                outputFile.outputStream.use {
-                    it.write(rawLogLines.toString().toByteArray(Charsets.UTF_8))
+                var exception: Throwable? = null
+                var outputFile: DownloadsFileSaver.DownloadsFile? = null
+                try {
+                    outputFile = DownloadsFileSaver.save(context, "wireguard-log.txt", "text/plain", true)
+                    outputFile.outputStream.use {
+                        it.write(rawLogLines.toString().toByteArray(Charsets.UTF_8))
+                    }
+                } catch (e: Throwable) {
+                    outputFile?.delete()
+                    exception = e
                 }
                 withContext(Dispatchers.Main) {
+                    saveButton?.isEnabled = true
                     Snackbar.make(findViewById(android.R.id.content),
-                            getString(R.string.log_export_success, outputFile.fileName),
-                            Snackbar.LENGTH_SHORT)
+                            if (exception == null) getString(R.string.log_export_success, outputFile?.fileName)
+                            else getString(R.string.log_export_error, ErrorMessages.get(exception)),
+                            if (exception == null) Snackbar.LENGTH_SHORT else Snackbar.LENGTH_LONG)
                             .setAnchorView(binding.shareFab)
                             .show()
-                    saveButton?.isEnabled = true
                 }
             }
         }
@@ -200,8 +209,8 @@ class LogViewerActivity : AppCompatActivity() {
             rawLogLines.append(line)
             rawLogLines.append('\n')
             val logLine = parseLine(line)
-            if (logLine != null) {
-                withContext(Dispatchers.Main) {
+            withContext(Dispatchers.Main) {
+                if (logLine != null) {
                     recyclerView?.let {
                         val shouldScroll = it.canScrollVertically(1)
                         logLines.add(logLine)
@@ -209,6 +218,13 @@ class LogViewerActivity : AppCompatActivity() {
                         if (!shouldScroll)
                             it.scrollToPosition(logLines.size - 1)
                     }
+                } else {
+                    /* I'd prefer for the next line to be:
+                     *    logLines.lastOrNull()?.msg += "\n$line"
+                     * However, as of writing, that causes the kotlin compiler to freak out and crash, spewing bytecode.
+                     */
+                    logLines.lastOrNull()?.apply { msg += "\n$line" }
+                    logAdapter.notifyDataSetChanged()
                 }
             }
         }
@@ -232,7 +248,7 @@ class LogViewerActivity : AppCompatActivity() {
         }
     }
 
-    private data class LogLine(val pid: Int, val tid: Int, val time: Date?, val level: String, val tag: String, val msg: String)
+    private data class LogLine(val pid: Int, val tid: Int, val time: Date?, val level: String, val tag: String, var msg: String)
 
     companion object {
         /**
@@ -242,7 +258,7 @@ class LogViewerActivity : AppCompatActivity() {
          */
         private val THREADTIME_LINE: Pattern = Pattern.compile("^(\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}.\\d{3})(?:\\s+[0-9A-Za-z]+)?\\s+(\\d+)\\s+(\\d+)\\s+([A-Z])\\s+(.+?)\\s*: (.*)$")
         private val LOGS: MutableMap<String, ByteArray> = ConcurrentHashMap()
-        private var SHARE_ACTIVITY_REQUEST = 49133
+        private const val SHARE_ACTIVITY_REQUEST = 49133
     }
 
     private inner class LogEntryAdapter : RecyclerView.Adapter<LogEntryAdapter.ViewHolder>() {
