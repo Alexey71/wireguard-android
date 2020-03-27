@@ -46,7 +46,7 @@ class TunnelEditorFragment : BaseFragment(), AppExclusionListener {
             Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
             onFinished()
         } else {
-            val error = ErrorMessages.get(throwable)
+            val error = ErrorMessages[throwable]
             message = getString(R.string.config_save_error, savedTunnel.name, error)
             Log.e(TAG, message, throwable)
             binding?.let {
@@ -114,7 +114,7 @@ class TunnelEditorFragment : BaseFragment(), AppExclusionListener {
             val newConfig = try {
                 binding!!.config!!.resolve()
             } catch (e: Exception) {
-                val error = ErrorMessages.get(e)
+                val error = ErrorMessages[e]
                 val tunnelName = if (tunnel == null) binding!!.name else tunnel!!.name
                 val message = getString(R.string.config_save_error, tunnelName, error)
                 Log.e(TAG, message, e)
@@ -125,17 +125,15 @@ class TunnelEditorFragment : BaseFragment(), AppExclusionListener {
                 tunnel == null -> {
                     Log.d(TAG, "Attempting to create new tunnel " + binding!!.name)
                     val manager = Application.getTunnelManager()
-                    manager.create(binding!!.name!!, newConfig)
-                            .whenComplete(this::onTunnelCreated)
+                    manager.create(binding!!.name!!, newConfig).whenComplete(this::onTunnelCreated)
                 }
                 tunnel!!.name != binding!!.name -> {
                     Log.d(TAG, "Attempting to rename tunnel to " + binding!!.name)
-                    tunnel!!.setName(binding!!.name!!)
-                            .whenComplete { _, t -> onTunnelRenamed(tunnel!!, newConfig, t) }
+                    tunnel!!.setNameAsync(binding!!.name!!).whenComplete { _, t -> onTunnelRenamed(tunnel!!, newConfig, t) }
                 }
                 else -> {
                     Log.d(TAG, "Attempting to save config of " + tunnel!!.name)
-                    tunnel!!.setConfig(newConfig)
+                    tunnel!!.setConfigAsync(newConfig)
                             .whenComplete { _, t -> onConfigSaved(tunnel!!, t) }
                 }
             }
@@ -181,7 +179,7 @@ class TunnelEditorFragment : BaseFragment(), AppExclusionListener {
             Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
             onFinished()
         } else {
-            val error = ErrorMessages.get(throwable)
+            val error = ErrorMessages[throwable]
             message = getString(R.string.tunnel_create_error, error)
             Log.e(TAG, message, throwable)
             binding?.let {
@@ -198,9 +196,9 @@ class TunnelEditorFragment : BaseFragment(), AppExclusionListener {
             Log.d(TAG, message)
             // Now save the rest of configuration changes.
             Log.d(TAG, "Attempting to save config of renamed tunnel " + tunnel!!.name)
-            renamedTunnel.setConfig(newConfig).whenComplete { _, t -> onConfigSaved(renamedTunnel, t) }
+            renamedTunnel.setConfigAsync(newConfig).whenComplete { _, t -> onConfigSaved(renamedTunnel, t) }
         } else {
-            val error = ErrorMessages.get(throwable)
+            val error = ErrorMessages[throwable]
             message = getString(R.string.tunnel_rename_error, error)
             Log.e(TAG, message, throwable)
             binding?.let {

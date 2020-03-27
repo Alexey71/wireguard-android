@@ -235,7 +235,7 @@ class TunnelListFragment : BaseFragment() {
         if (throwable == null) {
             message = resources.getQuantityString(R.plurals.delete_success, count, count)
         } else {
-            val error = ErrorMessages.get(throwable)
+            val error = ErrorMessages[throwable]
             message = resources.getQuantityString(R.plurals.delete_error, count, count, error)
             Log.e(TAG, message, throwable)
         }
@@ -245,7 +245,7 @@ class TunnelListFragment : BaseFragment() {
     private fun onTunnelImportFinished(tunnels: List<ObservableTunnel>, throwables: Collection<Throwable>) {
         var message = ""
         for (throwable in throwables) {
-            val error = ErrorMessages.get(throwable)
+            val error = ErrorMessages[throwable]
             message = getString(R.string.import_error, error)
             Log.e(TAG, message, throwable)
         }
@@ -267,23 +267,26 @@ class TunnelListFragment : BaseFragment() {
         binding ?: return
         binding!!.fragment = this
         Application.getTunnelManager().tunnels.thenAccept { tunnels -> binding!!.tunnels = tunnels }
-        binding!!.rowConfigurationHandler = RowConfigurationHandler { binding: TunnelListItemBinding, tunnel: ObservableTunnel, position ->
-            binding.fragment = this
-            binding.root.setOnClickListener {
-                if (actionMode == null) {
-                    selectedTunnel = tunnel
-                } else {
-                    actionModeListener.toggleItemChecked(position)
+        val parent = this
+        binding!!.rowConfigurationHandler = object : RowConfigurationHandler<TunnelListItemBinding, ObservableTunnel> {
+            override fun onConfigureRow(binding: TunnelListItemBinding, item: ObservableTunnel, position: Int) {
+                binding.fragment = parent
+                binding.root.setOnClickListener {
+                    if (actionMode == null) {
+                        selectedTunnel = item
+                    } else {
+                        actionModeListener.toggleItemChecked(position)
+                    }
                 }
+                binding.root.setOnLongClickListener {
+                    actionModeListener.toggleItemChecked(position)
+                    true
+                }
+                if (actionMode != null)
+                    (binding.root as MultiselectableRelativeLayout).setMultiSelected(actionModeListener.checkedItems.contains(position))
+                else
+                    (binding.root as MultiselectableRelativeLayout).setSingleSelected(selectedTunnel == item)
             }
-            binding.root.setOnLongClickListener {
-                actionModeListener.toggleItemChecked(position)
-                true
-            }
-            if (actionMode != null)
-                (binding.root as MultiselectableRelativeLayout).setMultiSelected(actionModeListener.checkedItems.contains(position))
-            else
-                (binding.root as MultiselectableRelativeLayout).setSingleSelected(selectedTunnel == tunnel)
         }
     }
 

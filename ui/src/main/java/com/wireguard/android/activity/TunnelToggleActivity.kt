@@ -23,7 +23,7 @@ class TunnelToggleActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val tunnel = Application.getTunnelManager().lastUsedTunnel ?: return
-        tunnel.setState(Tunnel.State.TOGGLE).whenComplete { _, t ->
+        tunnel.setStateAsync(Tunnel.State.TOGGLE).whenComplete { _, t ->
             TileService.requestListeningState(this, ComponentName(this, QuickTileService::class.java))
             onToggleFinished(t)
             finishAffinity()
@@ -32,7 +32,7 @@ class TunnelToggleActivity : AppCompatActivity() {
 
     private fun onToggleFinished(throwable: Throwable?) {
         if (throwable == null) return
-        val error = ErrorMessages.get(throwable)
+        val error = ErrorMessages[throwable]
         val message = getString(R.string.toggle_error, error)
         Log.e(TAG, message, throwable)
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
